@@ -8,7 +8,7 @@ public static class HabitMappings
     {
         return new HabitDto
         {
-            Id = $"h_{Guid.CreateVersion7()}",
+            Id = habit.Id,
             Name = habit.Name,
             Description = habit.Description,
             Type = habit.Type,
