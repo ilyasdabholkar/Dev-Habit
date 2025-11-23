@@ -63,15 +63,15 @@ public class HabitsController : ControllerBase
 
         HabitDto habitDto = habit.ToDto();
 
-        return CreatedAtAction(nameof(GetHabit),new {id = habitDto.Id},habitDto);
+        return CreatedAtAction(nameof(GetHabit), new { id = habitDto.Id }, habitDto);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateHabit(string id,UpdateHabitDto updateHabitDto)
+    public async Task<ActionResult> UpdateHabit(string id, UpdateHabitDto updateHabitDto)
     {
         Habit? habit = await _dbContext.Habits.FirstOrDefaultAsync(h => h.Id == id);
 
-        if(habit is null)
+        if (habit is null)
         {
             return NotFound();
         }
@@ -87,9 +87,9 @@ public class HabitsController : ControllerBase
     {
         Habit? habit = await _dbContext.Habits.FirstOrDefaultAsync(h => h.Id == id);
 
-        if(habit is null)
-        {  
-            return NotFound(); 
+        if (habit is null)
+        {
+            return NotFound();
         }
 
         HabitDto habitDto = habit.ToDto();
@@ -107,6 +107,21 @@ public class HabitsController : ControllerBase
 
         await _dbContext.SaveChangesAsync();
 
-        return NoContent(); 
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteHabit(string id) {
+        Habit? habit = await _dbContext.Habits.FirstOrDefaultAsync(h => h.Id == id);
+
+        if (habit is null)
+        {
+            return NotFound();
+        }
+
+        _dbContext.Habits.Remove(habit);
+        await _dbContext.SaveChangesAsync();
+
+        return NoContent();
     }
 }
