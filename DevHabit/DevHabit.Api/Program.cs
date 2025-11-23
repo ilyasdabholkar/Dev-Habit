@@ -11,16 +11,18 @@ using OpenTelemetry.Trace;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options =>
-{
-    options.ReturnHttpNotAcceptable = true;
-}).AddXmlSerializerFormatters();
+    {
+        options.ReturnHttpNotAcceptable = true;
+    })
+    .AddNewtonsoftJson()
+    .AddXmlSerializerFormatters();
 
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options
         .UseNpgsql(builder.Configuration.GetConnectionString("Database"),
-        npgsqlOptions => npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName,Schemas.Application))
+        npgsqlOptions => npgsqlOptions.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Application))
         .UseSnakeCaseNamingConvention());
 
 builder.Services.AddOpenTelemetry()
